@@ -1,0 +1,8 @@
+**/.*.sw?
+**/*.[oa]
+.gradle
+.gradle/**
+build
+**/*.vim
+**/*.bin
+**/*.lock
