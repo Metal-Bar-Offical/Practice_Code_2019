@@ -103,10 +103,9 @@ void Robot::RobotInit() {
 		talon_drive_right_enc,
 		talon_drive_left_enc,
 		talon_intake_pivot,
-		talon_climber_vertical,
 		talon_climber_wheels,
 		talon_elevator,
-		talon_seat_enc);
+		talon_intake_clamp);
 
 	diagnostic=new Diagnostic(
 		joy,
@@ -118,7 +117,7 @@ void Robot::RobotInit() {
 		talon_intake_clamp,
 		talon_intake_pivot,
 		talon_elevator,
-		talon_elevator_noenc,
+		talon_climber_vertical,
 		talon_climber_wheels);
 }
 

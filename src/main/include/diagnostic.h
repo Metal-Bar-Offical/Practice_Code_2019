@@ -17,8 +17,8 @@ public:
 		TalonSRX *intake_wheels,
 		TalonSRX *intake_clamp,
 		TalonSRX *intake_pivot,
-		TalonSRX *elevator_enc,
-		TalonSRX *elevator_noenc,
+		TalonSRX *elevator,
+		TalonSRX *climber_vertical,
 		TalonSRX *climber_wheels
 	):
 		// initialize member variables
@@ -31,8 +31,8 @@ public:
             intake_wheels,
             intake_clamp,
 			intake_pivot,
-            elevator_enc,
-            elevator_noenc,
+            elevator,
+            climber_vertical,
 			climber_wheels
 		}
 	{

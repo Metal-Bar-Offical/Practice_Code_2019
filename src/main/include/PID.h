@@ -14,7 +14,7 @@ public:
 		TalonSRX* talon_intake_pivot,
 		TalonSRX* talon_climber_enc,
 		TalonSRX* talon_elevator_enc,
-		TalonSRX* talon_seat_enc
+		TalonSRX* talon_seat
 	):
 		// initialize member variables
 		talon_drive_right_enc(talon_drive_right_enc),
@@ -22,7 +22,7 @@ public:
 		talon_intake_pivot(talon_intake_pivot),
 		talon_climber_enc(talon_climber_enc),
 		talon_elevator_enc(talon_elevator_enc),
-		talon_seat_enc(talon_seat_enc)
+		talon_seat(talon_seat)
 	{
 		// run on initialization
 		std::cout<<"initializing PID";
@@ -31,11 +31,11 @@ public:
 	// run
 	void run_pid ();
 private:
-	TalonSRX* talon_drive_right_enc, talon_drive_left_enc;
+	TalonSRX* talon_drive_right_enc, *talon_drive_left_enc;
 	TalonSRX* talon_intake_pivot;
 	TalonSRX* talon_climber_enc;
 	TalonSRX* talon_elevator_enc;
-	TalonSRX* talon_seat_enc;
+	TalonSRX* talon_seat;
 
 };
 

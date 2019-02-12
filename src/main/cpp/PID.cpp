@@ -27,10 +27,10 @@ void PID::run_pid (){
 	talon_elevator_enc->Config_kD(0,0,10);
 	talon_elevator_enc->Config_kF(0,0,10);
 
-	talon_seat_enc->Config_kP(0,0,10);
-	talon_seat_enc->Config_kI(0,0,10);
-	talon_seat_enc->Config_kD(0,0,10);
-	talon_seat_enc->Config_kF(0,0,10);
+	talon_seat->Config_kP(0,0,10);
+	talon_seat->Config_kI(0,0,10);
+	talon_seat->Config_kD(0,0,10);
+	talon_seat->Config_kF(0,0,10);
 
 	//talon->Config_kP(0, SmartDashboard::GetNumber ("DB/Slider 0"),10);
 	//talon->Config_kI(0, SmartDashboard::GetNumber ("DB/Slider 1"),10);
