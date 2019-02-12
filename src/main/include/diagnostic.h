@@ -2,7 +2,6 @@
 #define DIAGNOSTIC_H
 
 #include <constants.h>
-#include <typeinfo> // we may need this for type differentiation
 
 
 class Diagnostic {

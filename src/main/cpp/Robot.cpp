@@ -1,161 +1,181 @@
-#include "WPILib.h"
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.		                    */
+/* Open Source Software - may be modified and shared by FRC teams. The code	 */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.		                                                           */
+/*----------------------------------------------------------------------------*/
+
+#include "Robot.h"
 #include <ctre/Phoenix.h>
-#include <iostream>
+#include <frc/Joystick.h>
+
 #include <constants.h>
 #include <drivebase.h>
+#include <elevator.h>
 #include <intake_wheels.h>
 #include <intake_clamp.h>
 #include <intake_pivot.h>
 #include <intake.h>
-#include <elevator.h>
 #include <climber.h>
+#include <PID.h>
 #include <diagnostic.h>
+
+#include <frc/smartdashboard/SmartDashboard.h>
 
 using namespace frc;
 
-class Robot: public IterativeRobot{
-public:
-
-Robot(){}
-Joystick *joy1;
-TalonSRX *talon_elevator_enc;
-TalonSRX *yeet;
+// Joystick
+frc::Joystick *joy;
+// Talons
+TalonSRX *talon_drive_left_enc, *talon_drive_right_enc, *talon_drive_left_noenc, *talon_drive_right_noenc,
+	*talon_elevator,
+	*talon_intake_wheels, *talon_intake_clamp, *talon_intake_pivot,
+	*talon_climber_vertical, *talon_climber_wheels;
+// classes
+Drivebase *drivebase;
 Elevator *elevator;
-
-    void RobotInit(){
-        talon_elevator_enc= new TalonSRX(3);
-        yeet = new TalonSRX(4);
-        yeet->Set(ControlMode::Follower, 3);
-        
-        joy1 = new Joystick(0);
-        elevator = new Elevator (talon_elevator_enc, joy1);
-        talon_elevator_enc->Config_kP(0, 6.420360, 10);
-        talon_elevator_enc->Config_kI(0, 0, 10);
-        talon_elevator_enc->Config_kD(0, 0, 10);
-
-        std::cout<<"Megalovania v197"<<std::endl;
-        
-    }
-
-    void TeleopInit(){
-
-    }
-    void TeleopPeriodic(){
-elevator->run_elevator(20000, 10000, 40000, 30000, 60000, 50000);
-std::cout<<"Pos="<<talon_elevator_enc->GetSelectedSensorPosition(0)- 3333<<std::endl;
+Intake_wheels *intake_wheels;
+Intake_clamp *intake_clamp;
+Intake_pivot *intake_pivot;
+Intake *intake;
+Climber *climber;
+PID *pid;
+Diagnostic *diagnostic;
 
 
+void Robot::RobotInit() {
+	m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
+	m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
+	frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
+	std::cout<<"andrew boi"<<std::endl;
 
+	// initialize joystick
+	joy = new Joystick(0);
 
-    }
+	// initialize talons
+	talon_drive_left_enc=new TalonSRX( drive_left_enc_talonnum );
+	talon_drive_left_noenc=new TalonSRX( drive_left_noenc_talonnum );
+	talon_drive_right_enc=new TalonSRX( drive_right_enc_talonnum );
+	talon_drive_right_noenc=new TalonSRX( drive_right_noenc_talonnum );
 
-    void AutonomousInit(){
-    }
-    void AutonomousPeriodic(){
-    }
+	talon_elevator=new TalonSRX( elevator_talonnum );
 
-    void TestInit(){
-    }
-    void TestPeriodic(){
-    }
+	talon_intake_wheels=new TalonSRX( intake_wheels_talonnum );
+	talon_intake_clamp=new TalonSRX( intake_clamp_talonnum );
+	talon_intake_pivot=new TalonSRX( intake_pivot_talonnum );
 
-    void DisabledInit(){
-talon_elevator_enc->SetSelectedSensorPosition(0,0,10);
-    }
-    void DisabledPeriodic(){
-        
-    }
+	talon_climber_vertical=new TalonSRX( climber_vertical_talonnum );
+	talon_climber_wheels=new TalonSRX( climber_wheels_talonnum );
 
-};
-START_ROBOT_CLASS(Robot);
+	// initialize classes
 
+	drivebase=new Drivebase(
+		joy,
+		talon_drive_left_enc,
+		talon_drive_left_noenc,
+		talon_drive_right_enc,
+		talon_drive_right_noenc);
 
-// OLD CODE
-/*
-#include "WPILib.h"
-#include <ctre/Phoenix.h>
-#include <iostream>
-#include <intake_pivot.h>
-#include <elevator.h>
-#include <climber.h>
-class Robot: public IterativeRobot{
-public:
-//TalonSRX* talon_elevator_enc;
-//TalonSRX* talon_elevator_noenc;
-Joystick* joy1;
-TalonSRX* climber_talon_vertical_enc;
-TalonSRX* climber_talon_drive_enc;
+	elevator=new Elevator(
+		joy,
+		talon_elevator);
 
-//Elevator* elevator;
-Climber*climber;
+	intake_wheels=new Intake_wheels(
+		joy,
+		talon_intake_wheels);
+	intake_clamp=new Intake_clamp(
+		joy,
+		talon_intake_clamp);
+	intake_pivot=new Intake_pivot(
+		joy,
+		talon_intake_pivot);
+	intake=new Intake(
+		intake_wheels,
+		intake_clamp);
 
-   /* Intake Pivot Code
-   TalonSRX* talon_intake_pivot;
-   TalonSRX* follower_moter;
-   Joystick* joystick;
-   Intake_pivot* intake_pivot;
-   
+	climber=new Climber(
+		joy,
+		talon_climber_vertical,
+		talon_climber_wheels);
 
-    
+	pid=new PID(
+		talon_drive_right_enc,
+		talon_drive_left_enc,
+		talon_intake_pivot,
+		talon_climber_vertical,
+		talon_climber_wheels,
+		talon_elevator,
+		talon_seat_enc);
 
-    void RobotInit(){
-        /*intakepivot code
-        talon_intake_pivot = new TalonSRX(2);
-        //false motor
-        follower_moter = new TalonSRX(1);
-        follower_moter->Set(ControlMode::Follower, 2);
-        //false motor
-        talon_intake_pivot->Config_kP(0, 10, 10);
-        talon_intake_pivot->Config_kI(0, 0, 10);
-        talon_intake_pivot->Config_kD(0, 0, 10);
-        joystick = new Joystick (0);
-        intake_pivot = new Intake_pivot(talon_intake_pivot, joystick);
-        
-        joy1= new Joystick(1);
-        //talon_elevator_enc = new TalonSRX(2);
-        //talon_elevator_noenc = new TalonSRX(1);
-        climber_talon_vertical_enc= new TalonSRX(4);
-        climber_talon_drive_enc= new TalonSRX(3);
-        
-        //talon_elevator_noenc->Set(ControlMode::Follower, 2);
-        climber = new Climber (joy1, climber_talon_vertical_enc, climber_talon_drive_enc);
-        
-        //elevator = new Elevator(talon_elevator_enc, talon_elevator_noenc, joy1);
+	diagnostic=new Diagnostic(
+		joy,
+		talon_drive_left_enc,
+		talon_drive_left_noenc,
+		talon_drive_right_enc,
+		talon_drive_right_noenc,
+		talon_intake_wheels,
+		talon_intake_clamp,
+		talon_intake_pivot,
+		talon_elevator,
+		talon_elevator_noenc,
+		talon_climber_wheels);
+}
 
+/**
+ * This function is called every robot packet, no matter the mode. Use
+ * this for items like diagnostics that you want ran during disabled,
+ * autonomous, teleoperated and test.
+ *
+ * <p> This runs after the mode specific periodic functions, but before
+ * LiveWindow and SmartDashboard integrated updating.
+ */
+void Robot::RobotPeriodic() {}
 
-        std::cout<<"Megalovania v180"<<std::endl;
-        
-    }
+/**
+ * This autonomous (along with the chooser code above) shows how to select
+ * between different autonomous modes using the dashboard. The sendable chooser
+ * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
+ * remove all of the chooser code and uncomment the GetString line to get the
+ * auto name from the text box below the Gyro.
+ *
+ * You can add additional auto modes by adding additional comparisons to the
+ * if-else structure below with additional strings. If using the SendableChooser
+ * make sure to add them to the chooser code above as well.
+ */
+void Robot::AutonomousInit() {
+	m_autoSelected = m_chooser.GetSelected();
+	// m_autoSelected = SmartDashboard::GetString("Auto Selector",
+	// 	kAutoNameDefault);
+	std::cout << "Auto selected: " << m_autoSelected << std::endl;
 
-    void TeleopInit(){
+	if (m_autoSelected == kAutoNameCustom) {
+		// Custom Auto goes here
+	} else {
+		// Default Auto goes here
+	}
+}
 
-    }
-    void TeleopPeriodic(){
-//elevator->run_elevator(1,1);
-climber->run_climber(1);
-//talon_intake_pivot->Set(ControlMode::Position, 20000);
-//std::cout<<"error"<<20000-talon_intake_pivot->GetSelectedSensorPosition(0)<<std::endl;
+void Robot::AutonomousPeriodic() {
+	if (m_autoSelected == kAutoNameCustom) {
+		// Custom Auto goes here
+	} else {
+		// Default Auto goes here
+	}
+}
 
-    }
+void Robot::TeleopInit() {}
 
-    void AutonomousInit(){
-    }
-    void AutonomousPeriodic(){
-    }
+void Robot::TeleopPeriodic() {}
 
-    void TestInit(){
-    }
-    void TestPeriodic(){
-    }
+void Robot::TestInit(){
+	std::cout<<"aiight we gon' diagnose dis nau"<<std::endl;
+}
 
-    void DisabledInit(){
-        //talon_intake_pivot->SetSelectedSensorPosition(0,0,10);
-    }
-    void DisabledPeriodic(){
-        
-    }
+void Robot::TestPeriodic() {
+	diagnostic->update();
+}
 
-};
-START_ROBOT_CLASS(Robot);
-*/
+#ifndef RUNNING_FRC_TESTS
+int main() { return StartRobot<Robot>(); }
+#endif

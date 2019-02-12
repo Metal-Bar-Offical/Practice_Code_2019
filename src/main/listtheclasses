@@ -1,0 +1,6 @@
+#!/bin/bash
+
+ls -l cpp/ | tail -n +2 | awk '{print $NF}' | cut -d "." -f1 >> temp
+ls -l include/ | tail -n +2 | awk '{print $NF}' | cut -d "." -f1 >> temp
+sort temp | uniq -d
+rm temp

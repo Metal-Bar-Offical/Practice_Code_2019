@@ -6,8 +6,14 @@ using namespace frc;
 // increase or decrease ID number
 void Diagnostic :: tickID (bool sign) {
 	if(sign){
+		// increase
 		currentID++;
+		// loop back to 0
+		if (currentID==10) currentID=0;
 	}else{
+		// loop back to top
+		if (currentID==0) currentID=10;
+		// decrease
 		currentID--;
 	}
 }

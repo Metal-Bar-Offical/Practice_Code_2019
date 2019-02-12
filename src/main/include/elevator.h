@@ -6,28 +6,38 @@
 
 class Elevator {
 public:
+	// initialize elevator
 	Elevator(
-TalonSRX* talon_elevator_enc,
+		// receive parameters
+		frc::Joystick* joy1,
+		TalonSRX* talon_elevator
+	):
+		// initialize members with given parameters
+		joy1(joy1),
+		talon_elevator(talon_elevator)
+	{
+		// run on initialization
+		std::cout<<"initializing elevator";
+	};
 
-frc::Joystick* joy1
-)
-:
-talon_elevator_enc(talon_elevator_enc),
-
-joy1(joy1){};
-int current_elevator_pos = 1;
-int toggle1 =0;
-int toggle2 =0;
-int toggle_hatch1=0;
-int mode = 0;
-int mode_toggle1 =0;
-int mode_toggle2= 0;
-void run_elevator ( double rocket_low_hatch_pos, double rocket_low_ball_pos, double rocket_medium_hatch_pos, double rocket_medium_ball_pos,double rocket_high_hatch_pos,double rocket_high_ball_pos);
+	// run given height values
+	void run_elevator (
+		double rocket_low_hatch_pos,
+		double rocket_low_ball_pos,
+		double rocket_medium_hatch_pos,
+		double rocket_medium_ball_pos,
+		double rocket_high_hatch_pos,
+		double rocket_high_ball_pos
+	);
 private:
-TalonSRX* talon_elevator_enc;
+	frc::Joystick* joy1;
+	TalonSRX* talon_elevator;
 
-frc::Joystick* joy1;
-
+	int current_elevator_pos=1;
+	int toggle1=0, toggle2=0;
+	int toggle_hatch1=0;
+	int mode=0;
+	int mode_toggle1=0, mode_toggle2=0;
 };
 
 

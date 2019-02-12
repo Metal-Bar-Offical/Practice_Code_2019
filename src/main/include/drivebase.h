@@ -25,11 +25,10 @@ public:
 		// run on initialization
 		std::cout<<"initializing drivebase";
 		// setup talons so they run in pairs
-		talon_left_noenc->Set(ControlMode::Follower, talon_left_enc->GetDeviceID() );
-		talon_right_noenc->Set(ControlMode::Follower, talon_right_enc->GetDeviceID() );
-		// print encoder motor ID's
-		std::cout<<"\ttalon_left_enc ID="<<talon_left_enc->GetDeviceID();
-		std::cout<<"\ttalon_right_enc ID="<<talon_right_enc->GetDeviceID()<<std::endl;
+		talon_left_noenc->Set(ControlMode::Follower,
+			talon_left_enc->GetDeviceID() );
+		talon_right_noenc->Set(ControlMode::Follower,
+			talon_right_enc->GetDeviceID() );
 	};
 
 	//run this in TeleopPeriodic

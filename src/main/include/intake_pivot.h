@@ -6,26 +6,26 @@
 
 class Intake_pivot {
 public:
-	Intake_pivot(
-TalonSRX* talon_intake_pivot,
-frc::Joystick* joystick
-)
-:
-talon_intake_pivot(talon_intake_pivot),
-joystick (joystick){};
+	// initialize intake_pivot
+	Intake_pivot (
+		// receive parameters
+		frc::Joystick* joy1,
+		TalonSRX* talon_intake_pivot
+	):
+		// initialize member variables
+		joy1 (joy1),
+		talon_intake_pivot(talon_intake_pivot)
+	{
+		// run on initialization
+		std::cout<<"initializing intake_pivot";
+	};
 
-void run_intake_pivot (int toggle, int toggle_two);
+	// run given toggle values
+	void run_intake_pivot (int toggle, int toggle_two);
 
 private:
-TalonSRX* talon_intake_pivot;
-frc::Joystick* joystick;
-
-		
-
-
-
-
-
+	frc::Joystick* joy1;
+	TalonSRX* talon_intake_pivot;
 
 };
 #endif

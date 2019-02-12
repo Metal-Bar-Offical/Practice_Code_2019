@@ -22,11 +22,10 @@ class Robot : public frc::TimedRobot {
 	void AutonomousPeriodic() override;
 	void TeleopInit() override;
 	void TeleopPeriodic() override;
+	void TestInit() override;
 	void TestPeriodic() override;
 
  private:
-	TalonSRX *hey;
-	frc::Joystick *joy;
 	frc::SendableChooser<std::string> m_chooser;
 	const std::string kAutoNameDefault = "Default";
 	const std::string kAutoNameCustom = "My Auto";
