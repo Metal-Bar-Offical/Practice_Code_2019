@@ -36,6 +36,13 @@ private:
 	frc::Joystick* joy1;
 	TalonSRX* talon_elevator;
 
+	double	rocket_low_hatch_pos,
+			rocket_low_ball_pos,
+			rocket_medium_hatch_pos,
+			rocket_medium_ball_pos,
+			rocket_high_hatch_pos,
+			rocket_high_ball_pos;
+
 	int current_elevator_pos=1;
 	int toggle1=0, toggle2=0;
 	int toggle_hatch1=0;
