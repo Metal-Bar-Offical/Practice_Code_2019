@@ -21,7 +21,8 @@ TalonSRX*seat_talon_enc
 	climber_talon_enc(climber_talon_enc),
 	elevator_talon_enc(elevator_talon_enc),
 	seat_talon_enc(seat_talon_enc){};
-	void run_pid ();
+
+	void run_pid (int percentdrivebasespeed);
 private:
 TalonSRX*drive_talon_right_enc;
 TalonSRX*drive_talon_left_enc;
