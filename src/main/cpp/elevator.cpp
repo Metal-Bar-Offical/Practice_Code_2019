@@ -35,14 +35,14 @@ void Elevator :: calibrate (
 	double rocket_medium_ball_pos,
 	double rocket_high_hatch_pos,
 	double rocket_high_ball_pos
-):
-	rocket_low_hatch_pos(rocket_low_hatch_pos),
-	rocket_low_ball_pos(rocket_low_ball_pos),
-	rocket_medium_hatch_pos(rocket_medium_hatch_pos),
-	rocket_medium_ball_pos(rocket_medium_ball_pos),
-	rocket_high_hatch_pos(rocket_high_hatch_pos),
-	rocket_high_ball_pos(rocket_high_ball_pos)
-{}
+) {
+	rocket_low_hatch_pos=rocket_low_hatch_pos;
+    rocket_low_ball_pos=rocket_low_ball_pos;
+    rocket_medium_hatch_pos=rocket_medium_hatch_pos;
+    rocket_medium_ball_pos=rocket_medium_ball_pos;
+    rocket_high_hatch_pos=rocket_high_hatch_pos;
+    rocket_high_ball_pos=rocket_high_ball_pos;
+}
 
 // run this in TeleopPeriodic
 void Elevator :: update () {
