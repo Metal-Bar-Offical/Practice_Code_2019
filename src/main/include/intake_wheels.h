@@ -17,7 +17,7 @@ public:
 		talon_wheels(talon_wheels)
 	{
 		// run on initialization
-		std::cout<<"initializing intake_wheels";
+		std::cout<<"\n\t\tintake_wheels";
 	};
 
 	// run this in TeleopPeriodic

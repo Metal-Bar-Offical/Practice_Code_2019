@@ -17,15 +17,15 @@ public:
 		talon_intake_pivot(talon_intake_pivot)
 	{
 		// run on initialization
-		std::cout<<"initializing intake_pivot";
+		std::cout<<"\n\t\tintake_pivot";
 	};
 
-	// run given toggle values
-	void run_intake_pivot (int toggle, int toggle_two);
+	// put this in TeleopPeriodic
+	void update();
 
 private:
 	frc::Joystick* joy1;
 	TalonSRX* talon_intake_pivot;
-
+	int toggle=0, toggle_two=0;
 };
 #endif

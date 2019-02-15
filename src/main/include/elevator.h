@@ -17,11 +17,11 @@ public:
 		talon_elevator(talon_elevator)
 	{
 		// run on initialization
-		std::cout<<"initializing elevator";
+		std::cout<<"\n\t\televator";
 	};
 
 	// run given height values
-	void run_elevator (
+	void calibrate (
 		double rocket_low_hatch_pos,
 		double rocket_low_ball_pos,
 		double rocket_medium_hatch_pos,
@@ -29,6 +29,9 @@ public:
 		double rocket_high_hatch_pos,
 		double rocket_high_ball_pos
 	);
+
+	// run this in TeleopPeriodic
+	void update();
 private:
 	frc::Joystick* joy1;
 	TalonSRX* talon_elevator;

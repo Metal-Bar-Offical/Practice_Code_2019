@@ -3,7 +3,8 @@
 
 using namespace frc;
 
-void Intake_pivot :: run_intake_pivot (int toggle, int toggle_two) {
+// put this in TeleopPeriodic
+void Intake_pivot :: update () {
 	if (joy1->GetRawButton(5)==1 and toggle == 0 and toggle_two==0){
 
 		talon_intake_pivot->Set(ControlMode::Position, 20000);

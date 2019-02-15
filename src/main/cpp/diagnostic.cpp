@@ -16,6 +16,7 @@ void Diagnostic :: tickID (bool sign) {
 		// decrease
 		currentID--;
 	}
+	std::cout<<"ID# = "<<currentID+1<<std::endl;
 }
 
 // change value of current talon
@@ -45,7 +46,7 @@ void Diagnostic :: update () {
 	}
 
 	// update speed of current talon
-	writeToCurrentTalon( joy->GetRawAxis(diagnostic_test_joynum) );
+	writeToCurrentTalon(joy->GetRawAxis(diagnostic_test_joynum) * diagnostic_test_speed);
 
 	// collect tick values for next frame
 	wasntPressedA = !joy->GetRawButton( diagnostic_tickup_joynum );

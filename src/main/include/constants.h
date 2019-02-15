@@ -9,16 +9,16 @@
 
 
 // talon numbers
-const int drive_left_enc_talonnum = 1;
-const int drive_left_noenc_talonnum = 2;
-const int drive_right_enc_talonnum = 3;
-const int drive_right_noenc_talonnum = 4;
+const int drive_left_enc_talonnum = 2;
+const int drive_left_noenc_talonnum = 1;
+const int drive_right_enc_talonnum = 4;
+const int drive_right_noenc_talonnum = 3;
 const int elevator_talonnum  = 8;
 const int intake_wheels_talonnum = 5;
-const int intake_clamp_talonnum = 6;
-const int intake_pivot_talonnum = 7;
-const int climber_vertical_talonnum = 10;
-const int climber_wheels_talonnum = 10;
+const int intake_clamp_talonnum = 9;
+const int intake_pivot_talonnum = 10;
+const int climber_vertical_talonnum = 6;
+const int climber_wheels_talonnum = 7;
 
 
 /*			Joystick #0
@@ -38,9 +38,9 @@ const int drive_turn_joynum = 4;
 // joystick 0 button numbers
 
 // joystick 0 axis/button numbers for diagnostic mode
-const int diagnostic_test_joynum = 1;
 const int diagnostic_tickup_joynum = 1;
 const int diagnostic_tickdown_joynum = 2;
+const int diagnostic_test_joynum = 5;
 
 
 /*			Joystick #1
@@ -69,6 +69,7 @@ const int intake_clamp_open_joynum = 4;
 const float drive_max_speed = 0.8;
 const float intake_wheels_speed = 0.4;
 const float intake_clamp_speed  = 0.4;
+const float diagnostic_test_speed = 0.5;
 
 
 // exponents for variable motion values- this way, most of the joystick's range will correspond to low values, and only the extremes will make high speeds

@@ -1,8 +1,8 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.		                    */
-/* Open Source Software - may be modified and shared by FRC teams. The code	 */
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.		                                                           */
+/* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
 #include "Robot.h"
@@ -48,12 +48,14 @@ void Robot::RobotInit() {
 	m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
 	frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
-	std::cout<<"andrew boi"<<std::endl;
+	std::cout<<"initializing:";
 
 	// initialize joystick
+	std::cout<<"\n\t\tjoysticks";
 	joy = new Joystick(0);
 
 	// initialize talons
+	std::cout<<"\n\t\ttalons";
 	talon_drive_left_enc=new TalonSRX( drive_left_enc_talonnum );
 	talon_drive_left_noenc=new TalonSRX( drive_left_noenc_talonnum );
 	talon_drive_right_enc=new TalonSRX( drive_right_enc_talonnum );
@@ -69,6 +71,7 @@ void Robot::RobotInit() {
 	talon_climber_wheels=new TalonSRX( climber_wheels_talonnum );
 
 	// initialize classes
+	std::cout<<"\ninitializing classes:";
 
 	drivebase=new Drivebase(
 		joy,
@@ -92,7 +95,8 @@ void Robot::RobotInit() {
 		talon_intake_pivot);
 	intake=new Intake(
 		intake_wheels,
-		intake_clamp);
+		intake_clamp,
+		intake_pivot);
 
 	climber=new Climber(
 		joy,
@@ -109,39 +113,26 @@ void Robot::RobotInit() {
 
 	diagnostic=new Diagnostic(
 		joy,
-		talon_drive_left_enc,
 		talon_drive_left_noenc,
-		talon_drive_right_enc,
+		talon_drive_left_enc,
 		talon_drive_right_noenc,
+		talon_drive_right_enc,
 		talon_intake_wheels,
-		talon_intake_clamp,
-		talon_intake_pivot,
-		talon_elevator,
 		talon_climber_vertical,
-		talon_climber_wheels);
+		talon_climber_wheels,
+		talon_elevator,
+		talon_intake_clamp,
+		talon_intake_pivot);
+
+	std::cout<<"\nyo, init complete!"<<std::endl;
 }
 
-/**
- * This function is called every robot packet, no matter the mode. Use
- * this for items like diagnostics that you want ran during disabled,
- * autonomous, teleoperated and test.
- *
- * <p> This runs after the mode specific periodic functions, but before
+/*
+ * This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
 void Robot::RobotPeriodic() {}
 
-/**
- * This autonomous (along with the chooser code above) shows how to select
- * between different autonomous modes using the dashboard. The sendable chooser
- * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
- * remove all of the chooser code and uncomment the GetString line to get the
- * auto name from the text box below the Gyro.
- *
- * You can add additional auto modes by adding additional comparisons to the
- * if-else structure below with additional strings. If using the SendableChooser
- * make sure to add them to the chooser code above as well.
- */
 void Robot::AutonomousInit() {
 	m_autoSelected = m_chooser.GetSelected();
 	// m_autoSelected = SmartDashboard::GetString("Auto Selector",
@@ -165,13 +156,16 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {}
 
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+	
+}
 
 void Robot::TestInit(){
 	std::cout<<"aiight we gon' diagnose dis nau"<<std::endl;
 }
 
 void Robot::TestPeriodic() {
+	std::cout<<"yaboiiii\t";
 	diagnostic->update();
 }
 

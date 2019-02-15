@@ -27,14 +27,25 @@ void Elevator :: update () {
 */
 
 
-void Elevator :: run_elevator (
+// set height values
+void Elevator :: calibrate (
 	double rocket_low_hatch_pos,
 	double rocket_low_ball_pos,
 	double rocket_medium_hatch_pos,
 	double rocket_medium_ball_pos,
 	double rocket_high_hatch_pos,
 	double rocket_high_ball_pos
-) {
+):
+	rocket_low_hatch_pos(rocket_low_hatch_pos),
+	rocket_low_ball_pos(rocket_low_ball_pos),
+	rocket_medium_hatch_pos(rocket_medium_hatch_pos),
+	rocket_medium_ball_pos(rocket_medium_ball_pos),
+	rocket_high_hatch_pos(rocket_high_hatch_pos),
+	rocket_high_ball_pos(rocket_high_ball_pos)
+{}
+
+// run this in TeleopPeriodic
+void Elevator :: update () {
 	//Auto Mode
 	if (mode==0){
 			//Switching Pos
@@ -85,6 +96,7 @@ void Elevator :: run_elevator (
 					}
 					toggle_hatch1 = 1;
 			}
+			// write to the talon
 			if (toggle_hatch1 == 1 and joy1->GetRawButton(1)==1 or joy1->GetRawButton(2)== 1){
 					if (current_elevator_pos >= 4){
 							current_elevator_pos =3;
@@ -121,6 +133,7 @@ void Elevator :: run_elevator (
 			mode_toggle1=0;
 			mode_toggle2=0;
 	}
+	// write to talon if manual mode is engaged
 	if (mode ==1){
 			talon_elevator->Set(ControlMode::PercentOutput,
 				joy1->GetRawAxis(1)* -1 *joy1->GetRawAxis(1)* joy1->GetRawAxis(1));

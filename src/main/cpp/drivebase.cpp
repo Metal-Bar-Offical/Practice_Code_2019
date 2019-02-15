@@ -28,4 +28,4 @@ void Drivebase :: update () {
 	talon_right_enc->Set(ControlMode::PercentOutput, -move+turn);
 
 	std::cout<<"\tleft moving at speed "<<move-turn<<"\tright moving at speed "<<move+turn<<std::endl;
-};
+}

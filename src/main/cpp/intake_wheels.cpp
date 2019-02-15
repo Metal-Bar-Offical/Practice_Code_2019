@@ -26,4 +26,4 @@ void Intake_wheels :: update () {
 	talon_wheels->Set(ControlMode::PercentOutput, suckSpeed );
 
 	std::cout<<"\tsuckSpeed="<<suckSpeed<<std::endl;
-};
+}

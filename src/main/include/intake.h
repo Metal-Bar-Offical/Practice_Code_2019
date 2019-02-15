@@ -13,14 +13,16 @@ public:
 	Intake (
 		// receive parameters
 		Intake_wheels *intake_wheels,
-		Intake_clamp *intake_clamp
+		Intake_clamp *intake_clamp,
+		Intake_pivot *intake_pivot
 	):
 		// initialize member variables
 		intake_wheels(intake_wheels),
-		intake_clamp(intake_clamp)
+		intake_clamp(intake_clamp),
+		intake_pivot(intake_pivot)
 	{
 		// run on initialization
-		std::cout<<"initializing intake_clamp";
+		std::cout<<"\n\t\tintake";
 	};
 
 	// run this in TeleopPeriodic
@@ -28,6 +30,7 @@ public:
 private:
 	Intake_wheels *intake_wheels;
 	Intake_clamp *intake_clamp;
+	Intake_pivot *intake_pivot;
 };
 
 #endif

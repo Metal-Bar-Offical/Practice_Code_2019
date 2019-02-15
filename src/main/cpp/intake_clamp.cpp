@@ -26,4 +26,4 @@ void Intake_clamp :: update () {
 	talon_clamp->Set(ControlMode::PercentOutput, clampSpeed );
 
 	std::cout<<"\tclamp speed="<<clampSpeed<<std::endl;
-};
+}

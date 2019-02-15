@@ -23,7 +23,7 @@ public:
 		talon_right_noenc(talon_right_noenc)
 	{
 		// run on initialization
-		std::cout<<"initializing drivebase";
+		std::cout<<"\n\t\tdrivebase";
 		// setup talons so they run in pairs
 		talon_left_noenc->Set(ControlMode::Follower,
 			talon_left_enc->GetDeviceID() );

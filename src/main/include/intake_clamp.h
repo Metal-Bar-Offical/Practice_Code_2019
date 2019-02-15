@@ -17,7 +17,7 @@ public:
 		talon_clamp(talon_clamp)
 	{
 		// run on initialization
-		std::cout<<"initializing intake_clamp";
+		std::cout<<"\n\t\tintake_clamp";
 	};
 
 	// run this in TeleopPeriodic

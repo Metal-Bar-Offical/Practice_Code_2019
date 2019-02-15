@@ -10,34 +10,34 @@ public:
 	Diagnostic (
 		// receive parameters
 		frc::Joystick *joy,
-		TalonSRX *drivebase_left_enc,
-		TalonSRX *drivebase_left_noenc,
-		TalonSRX *drivebase_right_enc,
-		TalonSRX *drivebase_right_noenc,
-		TalonSRX *intake_wheels,
-		TalonSRX *intake_clamp,
-		TalonSRX *intake_pivot,
-		TalonSRX *elevator,
-		TalonSRX *climber_vertical,
-		TalonSRX *climber_wheels
+		TalonSRX *talon_drive_left_noenc,
+		TalonSRX *talon_drive_left_enc,
+		TalonSRX *talon_drive_right_noenc,
+		TalonSRX *talon_drive_right_enc,
+		TalonSRX *talon_intake_wheels,
+		TalonSRX *talon_climber_vertical,
+		TalonSRX *talon_climber_wheels,
+		TalonSRX *talon_elevator,
+		TalonSRX *talon_intake_clamp,
+		TalonSRX *talon_intake_pivot
 	):
 		// initialize member variables
 		joy(joy),// joystick
 		talonCatalog{// all the talons arranged in an array
-			drivebase_left_enc,
-            drivebase_left_noenc,
-            drivebase_right_enc,
-            drivebase_right_noenc,
-            intake_wheels,
-            intake_clamp,
-			intake_pivot,
-            elevator,
-            climber_vertical,
-			climber_wheels
+			talon_drive_left_noenc,
+            talon_drive_left_enc,
+            talon_drive_right_noenc,
+            talon_drive_right_enc,
+            talon_intake_wheels,
+            talon_climber_vertical,
+			talon_climber_wheels,
+            talon_elevator,
+            talon_intake_clamp,
+			talon_intake_pivot
 		}
 	{
 		// run on initialization
-		std::cout<<"initializing diagnostic";
+		std::cout<<"\n\tdiagnostic";
 	};
 
 	// run this in TestPeriodic
