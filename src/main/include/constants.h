@@ -39,6 +39,9 @@ const int climber_wheels_talonnum = 8;
 const int drivebase_move_joynum = 1;
 const int drivebase_turn_joynum = 4;
 const int servo_toggle_joynum = 2;
+const int climber_wheels_control_joynum =1;
+const int climber_arm_lowering = 3;
+const int climber_arm_raising =4;
 // joystick 0 button numbers
 
 // joystick 0 axis/button numbers for diagnostic mode
