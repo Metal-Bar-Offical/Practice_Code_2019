@@ -6,7 +6,7 @@ using namespace frc;
 // run this in TeleopPeriodic
 void Intake_clamp :: update () {
 
-	std::cout<<"updating intake_clamp";
+	//std::cout<<"updating intake_clamp";
 
 	// collect values from joystick
 	closeButton = joy1->GetRawButton( intake_clamp_close_joynum );
@@ -25,5 +25,5 @@ void Intake_clamp :: update () {
 	// write to motors
 	talon_clamp->Set(ControlMode::PercentOutput, clampSpeed );
 
-	std::cout<<"\tclamp speed="<<clampSpeed<<std::endl;
+	//std::cout<<"\tclamp speed="<<clampSpeed<<std::endl;
 };

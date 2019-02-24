@@ -2,8 +2,7 @@
 
 using namespace frc;
 void Climber::servo_toggle(){
-	bool servo_toggle1 =false;
-	bool servo_toggle2=false;
+
 	if (joy0->GetRawButton(servo_toggle_joynum)==1 and !servo_toggle1 and !servo_toggle2){
 		//unlocks servo
 		lock_servo->Set(1.0);
@@ -24,18 +23,31 @@ void Climber::servo_toggle(){
 
 }
 void Climber::run_climber (double max_speed){
-Climber::servo_toggle();
+
+
+	servo_toggle();
 //sets a button to write to ClimberWheel
 climber_talon_wheel->Set(ControlMode::PercentOutput, max_speed*joy0->GetRawButton(climber_wheels_control_joynum));
 //lowers and brings up the climberArm
-if (joy0->GetRawButton(climber_arm_lowering)==1){
+if (joy0->GetRawButton(3)==1){
 	climber_talon_arm->Set(ControlMode::PercentOutput, max_speed * 1);
 }
-else if (joy0->GetRawButton(climber_arm_raising)==1){
+else if (joy0->GetRawButton(4)==1){
 	climber_talon_arm->Set(ControlMode::PercentOutput, max_speed*-1);
 }
 //shuts down talon
 else {
 	climber_talon_arm->Set(ControlMode::PercentOutput, 0);
+}
+//MAG switch hard stop
+if (mag_switch_climber->Get() == 0 and !mag_switch_cancel){
+	climber_talon_arm->Set(ControlMode::PercentOutput, 0);
+} 
+//Releases MagSwitch so talon can move. It is a PRESS AND HOLD FUNCTION!
+if (joy0->GetRawButton(6)==1 ){
+	mag_switch_cancel = true;
+}
+else {
+	mag_switch_cancel = false;
 }
 }

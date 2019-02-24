@@ -28,6 +28,10 @@ void Elevator :: update () {
 
 
 void Elevator::run_elevator (double rocket_low_hatch_pos, double rocket_low_ball_pos, double rocket_medium_hatch_pos, double rocket_medium_ball_pos,double rocket_high_hatch_pos,double rocket_high_ball_pos) {
+
+
+
+
 //Auto Mode
 if (mode==0){
 //Switching Pos

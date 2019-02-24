@@ -1,15 +1,16 @@
-#include "WPILib.h"
+#include "frc/WPILib.h"
 #include <ctre/Phoenix.h>
 #include <iostream>
-#include <constants.h>
-#include <drivebase.h>
+#include <constants.h>//TESTED
+#include <drivebase.h> //TESTED
 #include <intake_wheels.h>
-#include <intake_clamp.h>
+#include <intake_clamp.h>//TESTED
 #include <intake_pivot.h>
 #include <intake.h>
 #include <elevator.h>
-#include <climber.h>
+#include <climber.h>//TESTED
 #include <diagnostic.h>
+#include <PID.h>//TESTED
 
 using namespace frc;
 
@@ -17,125 +18,66 @@ class Robot: public IterativeRobot{
 public:
 
 Robot(){}
+
+Joystick *joy0;
 Joystick *joy1;
+TalonSRX *talon_left_enc;
+TalonSRX *talon_left_noenc;
+TalonSRX *talon_right_enc; 
+TalonSRX *talon_right_noenc;
+TalonSRX *climber_talon_wheel;
+TalonSRX *climber_talon_arm;
+TalonSRX *claw_pivot_talon_enc;
+Servo *lock_servo;
+DigitalInput * mag_switch_climber;
+
+TalonSRX *talon_clamp;
 TalonSRX *talon_elevator_enc;
-TalonSRX *yeet;
-Elevator *elevator;
+
+Drivebase *drivebase;
+Climber *climber;
+Intake_clamp *intake_clamp;
+Intake_pivot *intake_pivot;
+PID *pid;
 
     void RobotInit(){
-        talon_elevator_enc= new TalonSRX(3);
-        yeet = new TalonSRX(4);
-        yeet->Set(ControlMode::Follower, 3);
-        
-        joy1 = new Joystick(0);
-        elevator = new Elevator (talon_elevator_enc, joy1);
-        talon_elevator_enc->Config_kP(0, 6.420360, 10);
-        talon_elevator_enc->Config_kI(0, 0, 10);
-        talon_elevator_enc->Config_kD(0, 0, 10);
-
-        std::cout<<"Megalovania v197"<<std::endl;
-        
-    }
-
-    void TeleopInit(){
-
-    }
-    void TeleopPeriodic(){
-elevator->run_elevator(20000, 10000, 40000, 30000, 60000, 50000);
-std::cout<<"Pos="<<talon_elevator_enc->GetSelectedSensorPosition(0)- 3333<<std::endl;
-
-
-
-
-
-    }
-
-    void AutonomousInit(){
-    }
-    void AutonomousPeriodic(){
-    }
-
-    void TestInit(){
-    }
-    void TestPeriodic(){
-    }
-
-    void DisabledInit(){
-talon_elevator_enc->SetSelectedSensorPosition(0,0,10);
-    }
-    void DisabledPeriodic(){
-        
-    }
-
-};
-START_ROBOT_CLASS(Robot);
-
-
-// OLD CODE
-/*
-#include "WPILib.h"
-#include <ctre/Phoenix.h>
-#include <iostream>
-#include <intake_pivot.h>
-#include <elevator.h>
-#include <climber.h>
-class Robot: public IterativeRobot{
-public:
-//TalonSRX* talon_elevator_enc;
-//TalonSRX* talon_elevator_noenc;
-Joystick* joy1;
-TalonSRX* climber_talon_vertical_enc;
-TalonSRX* climber_talon_drive_enc;
-
-//Elevator* elevator;
-Climber*climber;
-
-   /* Intake Pivot Code
-   TalonSRX* talon_intake_pivot;
-   TalonSRX* follower_moter;
-   Joystick* joystick;
-   Intake_pivot* intake_pivot;
+       joy0 = new Joystick(0);
+       joy1 = new Joystick(1);
+       talon_left_enc = new TalonSRX(2);
+       talon_left_noenc = new TalonSRX(1);
+       talon_right_enc = new TalonSRX(4);
+       talon_right_noenc = new TalonSRX(3);
+       climber_talon_wheel = new TalonSRX(7);
+       climber_talon_arm = new TalonSRX(6);
+       talon_clamp = new TalonSRX(10);
+       claw_pivot_talon_enc = new TalonSRX(5);
+       lock_servo = new Servo(1);
+       mag_switch_climber = new DigitalInput(0);
+       talon_elevator_enc = new TalonSRX(8);
    
-
-    
-
-    void RobotInit(){
-        /*intakepivot code
-        talon_intake_pivot = new TalonSRX(2);
-        //false motor
-        follower_moter = new TalonSRX(1);
-        follower_moter->Set(ControlMode::Follower, 2);
-        //false motor
-        talon_intake_pivot->Config_kP(0, 10, 10);
-        talon_intake_pivot->Config_kI(0, 0, 10);
-        talon_intake_pivot->Config_kD(0, 0, 10);
-        joystick = new Joystick (0);
-        intake_pivot = new Intake_pivot(talon_intake_pivot, joystick);
-        
-        joy1= new Joystick(1);
-        //talon_elevator_enc = new TalonSRX(2);
-        //talon_elevator_noenc = new TalonSRX(1);
-        climber_talon_vertical_enc= new TalonSRX(4);
-        climber_talon_drive_enc= new TalonSRX(3);
-        
-        //talon_elevator_noenc->Set(ControlMode::Follower, 2);
-        climber = new Climber (joy1, climber_talon_vertical_enc, climber_talon_drive_enc);
-        
-        //elevator = new Elevator(talon_elevator_enc, talon_elevator_noenc, joy1);
-
-
-        std::cout<<"Megalovania v180"<<std::endl;
-        
+   pid = new PID (talon_right_enc, talon_left_enc, claw_pivot_talon_enc, talon_elevator_enc);
+   intake_pivot = new Intake_pivot(claw_pivot_talon_enc, joy1);
+    intake_clamp = new Intake_clamp(joy1, talon_clamp);
+       drivebase = new Drivebase (joy0, talon_left_enc, talon_left_noenc, talon_right_enc, talon_right_noenc);
+       talon_left_noenc->Set(ControlMode::Follower, 2);
+       talon_right_noenc->Set(ControlMode::Follower, 4);
+       climber = new Climber(joy0, mag_switch_climber, climber_talon_arm,climber_talon_wheel, lock_servo);
+        std::cout<<"Full Teleop v22"<<std::endl;
     }
 
     void TeleopInit(){
 
     }
     void TeleopPeriodic(){
-//elevator->run_elevator(1,1);
-climber->run_climber(1);
-//talon_intake_pivot->Set(ControlMode::Position, 20000);
-//std::cout<<"error"<<20000-talon_intake_pivot->GetSelectedSensorPosition(0)<<std::endl;
+        drivebase->update();
+        climber->run_climber(.75);
+        pid->PID_claw_elevator();
+    
+        intake_clamp->update();
+        intake_pivot->run_intake_pivot(0, 180, 720);
+
+        
+
 
     }
 
@@ -150,7 +92,7 @@ climber->run_climber(1);
     }
 
     void DisabledInit(){
-        //talon_intake_pivot->SetSelectedSensorPosition(0,0,10);
+
     }
     void DisabledPeriodic(){
         
@@ -158,4 +100,4 @@ climber->run_climber(1);
 
 };
 START_ROBOT_CLASS(Robot);
-*/
+

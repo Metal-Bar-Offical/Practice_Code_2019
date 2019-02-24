@@ -7,18 +7,24 @@
 class Intake_pivot {
 public:
 	Intake_pivot(
-TalonSRX* talon_intake_pivot,
-frc::Joystick* joystick
+TalonSRX* claw_pivot_talon_enc,
+frc::Joystick* joy1
 )
 :
-talon_intake_pivot(talon_intake_pivot),
-joystick (joystick){};
+claw_pivot_talon_enc(claw_pivot_talon_enc),
+joy1 (joy1){};
+int toggle1 = 0;
+int toggle2 =0;
+int mode = 0;
+int mode_toggle1 =0;
+int mode_toggle2 =0;
+int current_pivot_pos =1;
 
-void run_intake_pivot (int toggle, int toggle_two);
+void run_intake_pivot (int pivot_start, int pivot_high, int pivot_ball);
 
 private:
-TalonSRX* talon_intake_pivot;
-frc::Joystick* joystick;
+TalonSRX* claw_pivot_talon_enc;
+frc::Joystick* joy1;
 
 		
 
