@@ -29,7 +29,9 @@ void Elevator :: update () {
 
 void Elevator::run_elevator (double rocket_low_hatch_pos, double rocket_low_ball_pos, double rocket_medium_hatch_pos, double rocket_medium_ball_pos,double rocket_high_hatch_pos,double rocket_high_ball_pos) {
 
-
+if (mag_switch_elevator->Get()==0){
+	talon_elevator_enc->SetSelectedSensorPosition(0);
+}
 
 
 //Auto Mode
@@ -56,8 +58,11 @@ if (mode==0){
 		if (current_elevator_pos >= 4){
 		current_elevator_pos =3;
 		}
-		if (current_elevator_pos <=0){
-		current_elevator_pos = 1;
+		if (current_elevator_pos <=-1){
+		current_elevator_pos = 0;
+		}
+		if (current_elevator_pos ==0){
+			talon_elevator_enc->Set(ControlMode::Position, 0);
 		}
 		if (current_elevator_pos ==1){
 		talon_elevator_enc->Set(ControlMode::Position, rocket_low_ball_pos);
@@ -86,8 +91,11 @@ if (mode==0){
 		if (current_elevator_pos >= 4){
 		current_elevator_pos =3;
 		}
-		if (current_elevator_pos <=0){
-		current_elevator_pos = 1;
+		if (current_elevator_pos <=-1){
+		current_elevator_pos = 0;
+		}
+		if (current_elevator_pos ==0){
+			talon_elevator_enc->Set(ControlMode::Position, 0);
 		}
 		if (current_elevator_pos ==1){
 		talon_elevator_enc->Set(ControlMode::Position, rocket_low_ball_pos);
@@ -107,11 +115,13 @@ if (joy1->GetRawButton(7)==1 and mode_toggle1 == 0 and mode_toggle2 ==0){
 	mode= 1;
 	mode_toggle1 = 1;
 }
-if (joy1->GetRawButton(7)==0 and mode_toggle1){
+if (joy1->GetRawButton(7)==0 and mode_toggle1==1){
 	mode_toggle2=1;
+	mode_toggle1=0;
 }
 if (joy1->GetRawButton(7)== 1 and mode_toggle2 == 1){
 	mode = 0;
+
 	mode_toggle2 =2;
 }
 if (joy1->GetRawButton(7)==0 and mode_toggle2 == 2){
@@ -119,7 +129,7 @@ if (joy1->GetRawButton(7)==0 and mode_toggle2 == 2){
 	mode_toggle2=0;
 }
 if (mode ==1){
-	talon_elevator_enc->Set(ControlMode::PercentOutput, joy1->GetRawAxis(1)* -1 *joy1->GetRawAxis(1)* joy1->GetRawAxis(1));
+	talon_elevator_enc->Set(ControlMode::PercentOutput, joy1->GetRawAxis(1));
 	std::cout<<"MANUAL MODE ON"<<std::endl;
 }
 

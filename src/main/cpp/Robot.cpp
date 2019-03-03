@@ -5,8 +5,7 @@
 #include <drivebase.h> //TESTED
 #include <intake_wheels.h>
 #include <intake_clamp.h>//TESTED
-#include <intake_pivot.h>
-#include <intake.h>
+#include <intake_pivot.h>//TESTED
 #include <elevator.h>
 #include <climber.h>//TESTED
 #include <diagnostic.h>
@@ -28,17 +27,21 @@ TalonSRX *talon_right_noenc;
 TalonSRX *climber_talon_wheel;
 TalonSRX *climber_talon_arm;
 TalonSRX *claw_pivot_talon_enc;
+TalonSRX *talon_wheels;
 Servo *lock_servo;
 DigitalInput * mag_switch_climber;
-
+DigitalInput * mag_switch_claw;
+DigitalInput *mag_switch_elevator;
 TalonSRX *talon_clamp;
 TalonSRX *talon_elevator_enc;
 
 Drivebase *drivebase;
+Intake_wheels *intake_wheels;
 Climber *climber;
 Intake_clamp *intake_clamp;
 Intake_pivot *intake_pivot;
 PID *pid;
+Elevator *elevator;
 
     void RobotInit(){
        joy0 = new Joystick(0);
@@ -49,20 +52,55 @@ PID *pid;
        talon_right_noenc = new TalonSRX(3);
        climber_talon_wheel = new TalonSRX(7);
        climber_talon_arm = new TalonSRX(6);
+       talon_wheels = new TalonSRX(9);
        talon_clamp = new TalonSRX(10);
        claw_pivot_talon_enc = new TalonSRX(5);
        lock_servo = new Servo(1);
        mag_switch_climber = new DigitalInput(0);
+       mag_switch_claw = new DigitalInput (2);
        talon_elevator_enc = new TalonSRX(8);
+       mag_switch_elevator = new DigitalInput(1);
+       elevator = new Elevator(talon_elevator_enc, mag_switch_elevator, joy1);
    
-   pid = new PID (talon_right_enc, talon_left_enc, claw_pivot_talon_enc, talon_elevator_enc);
-   intake_pivot = new Intake_pivot(claw_pivot_talon_enc, joy1);
-    intake_clamp = new Intake_clamp(joy1, talon_clamp);
+   CameraServer::GetInstance()->StartAutomaticCapture();
+        pid = new PID (talon_right_enc, talon_left_enc, claw_pivot_talon_enc, talon_elevator_enc);
+        intake_pivot = new Intake_pivot(claw_pivot_talon_enc, joy1, mag_switch_claw);
+        intake_clamp = new Intake_clamp(joy0, talon_clamp);
        drivebase = new Drivebase (joy0, talon_left_enc, talon_left_noenc, talon_right_enc, talon_right_noenc);
        talon_left_noenc->Set(ControlMode::Follower, 2);
        talon_right_noenc->Set(ControlMode::Follower, 4);
        climber = new Climber(joy0, mag_switch_climber, climber_talon_arm,climber_talon_wheel, lock_servo);
-        std::cout<<"Full Teleop v22"<<std::endl;
+       intake_wheels= new Intake_wheels(joy1, talon_wheels);
+
+       //TEMP CODE
+       /*
+       talon_left_enc->ConfigPeakOutputForward(.5, 10);
+       talon_left_enc->ConfigPeakOutputReverse(-.5, 10);
+       talon_left_noenc->ConfigPeakOutputForward(.5, 10);
+       talon_left_noenc->ConfigPeakOutputReverse(-.5, 10);
+       talon_right_noenc->ConfigPeakOutputForward(.5, 10);
+       talon_right_noenc->ConfigPeakOutputReverse(-.5, 10);
+       talon_right_enc->ConfigPeakOutputForward(.5, 10);
+       talon_right_enc->ConfigPeakOutputReverse(-.5, 10);
+       */
+     //claw_pivot_talon_enc->ConfigPeakOutputForward(.75, 10);
+     // claw_pivot_talon_enc->ConfigPeakOutputReverse(-.75, 10);
+       climber_talon_arm->ConfigPeakOutputForward(.75, 10);
+       climber_talon_arm->ConfigPeakOutputReverse(-.75, 10);
+       climber_talon_wheel->ConfigPeakOutputForward(1, 10);
+       climber_talon_wheel->ConfigPeakOutputReverse(-1, 10);
+       talon_elevator_enc->ConfigPeakOutputForward(.75, 10);
+       talon_elevator_enc->ConfigPeakOutputReverse(-.75, 10);
+       talon_wheels->ConfigPeakOutputForward(1, 10);
+       talon_wheels->ConfigPeakOutputReverse(-1, 10);
+       talon_clamp->ConfigPeakOutputForward(1, 10);
+       talon_clamp->ConfigPeakOutputReverse(-1, 10);
+
+
+
+
+ pid->PID_claw_elevator();
+        std::cout<<"Full Teleop v29"<<std::endl;
     }
 
     void TeleopInit(){
@@ -70,15 +108,15 @@ PID *pid;
     }
     void TeleopPeriodic(){
         drivebase->update();
-        climber->run_climber(.75);
-        pid->PID_claw_elevator();
-    
+        climber->run_climber(.75); 
+       
+        intake_wheels->update();
         intake_clamp->update();
-        intake_pivot->run_intake_pivot(0, 180, 720);
-
-        
-
-
+         
+        claw_pivot_talon_enc->Set(ControlMode::PercentOutput, joy1->GetRawAxis(5));
+        //intake_pivot->run_intake_pivot(0, 180, 720);
+ 
+       elevator->run_elevator(0,-2000,0,-5000, 0,-7000 );
     }
 
     void AutonomousInit(){
@@ -97,6 +135,7 @@ PID *pid;
     void DisabledPeriodic(){
         
     }
+
 
 };
 START_ROBOT_CLASS(Robot);

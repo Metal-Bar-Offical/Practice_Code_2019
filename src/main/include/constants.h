@@ -68,8 +68,8 @@ const int elevator_down_joynum = 3;
 // joystick 1 button numbers
 const int intake_wheels_in_joynum = 3;
 const int intake_wheels_out_joynum = 4;
-const int intake_clamp_close_joynum = 5;
-const int intake_clamp_open_joynum = 6;
+const int intake_clamp_close_joynum = 2;
+const int intake_clamp_open_joynum = 1;
 
 
 

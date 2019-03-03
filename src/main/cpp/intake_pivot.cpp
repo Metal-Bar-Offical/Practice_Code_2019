@@ -4,6 +4,11 @@
 using namespace frc;
 
 void Intake_pivot::run_intake_pivot ( int pivot_start, int pivot_high, int pivot_ball) {
+if (mag_switch_claw->Get()==0){
+	claw_pivot_talon_enc->SetSelectedSensorPosition(0,0,10);
+}
+
+
 if (mode==0){
 //Switching Pos
 	
@@ -32,12 +37,15 @@ if (mode==0){
 		}
 		if (current_pivot_pos ==1){
 		claw_pivot_talon_enc->Set(ControlMode::Position, pivot_start);
+		std::cout<<"set pos 0"<<std::endl;
 		}
 		if (current_pivot_pos ==2){
-	claw_pivot_talon_enc->Set(ControlMode::Position, pivot_high);
+		claw_pivot_talon_enc->Set(ControlMode::Position, pivot_high);
+		std::cout<<"set pos 2"<<std::endl;
 		}
 		if (current_pivot_pos==3){
 		claw_pivot_talon_enc->Set(ControlMode::Position, pivot_ball);
+		std::cout<<"setpos3"<<std::endl;
 		}
 	
 
@@ -50,6 +58,7 @@ if (joy1->GetRawButton(8)==1 and mode_toggle1 == 0 and mode_toggle2 ==0){
 }
 if (joy1->GetRawButton(8)==0 and mode_toggle1 ==1){
 	mode_toggle2=1;
+	mode_toggle1=0;
 }
 if (joy1->GetRawButton(8)== 1 and mode_toggle2 == 1){
 	mode = 0;
